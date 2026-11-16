@@ -79,13 +79,133 @@
          * Each time it is called, it should move the Box to a new location.
          * If the box drifts off the screen, turn it around!
          */
-        function update() {
-        moveBoxTo(200); // Moves box to x-position 200
-        moveBoxTo(450); // Moves box to x-position 200
-        moveBoxTo(boardWidth); // Moves box to right edge
+       <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bouncing Box Game</title>
 
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f2f2f2
+;
+      font-family: Arial, sans-serif;
+    }
 
+    #game {
+      width: min(90vw, 800px);
+      height: 300px;
+      position: relative;
+      overflow: hidden;
+      border: 4px solid #222;
+      border-radius: 12px;
+      background: white;
+    }
+
+    #box {
+      width: 80px;
+      height: 80px;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      border-radius: 12px;
+      background: #4f46e5
+;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    #instructions {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #222;
+      font-size: 16px;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="game">
+    <div id="instructions">Click the box!</div>
+    <button id="box">0</button>
+  </div>
+
+  <script>
+    const game = document.getElementById("game");
+    const box = document.getElementById("box");
+
+    let positionX = 0;
+    let points = 0;
+    let speed = 10;
+    let boardWidth = 0;
+
+    function updateBoardWidth() {
+      boardWidth = game.clientWidth - box.offsetWidth;
+    }
+
+    function moveBoxTo(x) {
+      box.style.left = x + "px";
+    }
+
+    function changeBoxText(text) {
+      box.textContent = text;
+    }
+
+    function update() {
+      positionX += speed;
+
+      if (positionX >= boardWidth) {
+        positionX = boardWidth;
+        speed *= -1;
+      }
+
+      if (positionX <= 0) {
+        positionX = 0;
+        speed *= -1;
+      }
+
+      moveBoxTo(positionX);
+    }
+
+    function handleBoxClick() {
+      positionX = 0;
+      points += 1;
+      speed = 3 * points + 10;
+
+      changeBoxText(points);
+      moveBoxTo(positionX);
+    }
+
+    box.addEventListener("click", handleBoxClick);
+    window.addEventListener("resize", updateBoardWidth);
+
+    updateBoardWidth();
+    moveBoxTo(positionX);
+    setInterval(update, 50);
+  </script>
+</body>
+</html>
 
 
 
